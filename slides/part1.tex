@@ -238,7 +238,7 @@ ret
 
 \begin{frame}{ABI breakage of \texttt{std::string}}
     \begin{columns}
-        \begin{column}{.5\textwidth}
+        \begin{column}{.55\textwidth}
             \begin{itemize}
                 \item Before \texttt{C++11}: libstdc++ relied on copy-on-write (COW)
                 \item \texttt{C++11} disallows COW 
@@ -251,15 +251,19 @@ ret
                     \item one word passed
                     \item three words read
                 \end{itemize}
-                \item \textit{Solution}${}^{\color{vertexDarkRed}\dagger}$: gcc manually changed the mangled name
+                \item \textit{Solution}${}^{\color{vertexDarkRed}\dagger}$: gcc changed mangled name
             \end{itemize}
         \end{column}
-        \begin{column}{.4\textwidth}
+        \begin{column}{.35\textwidth}
             \inputcpplisting{snippet6}
         \end{column}
     \end{columns}
 
-    \vspace{5mm}
+    \vspace{3mm}
+
+    \scalebox{1.2}{$\hookrightarrow$ Take-away for compiler vendors: ABI break was a huge disaster}
+
+    \vspace{3mm}
 
     \footnotesize ${}^{\color{vertexDarkRed}\dagger}$ RHEL 7 still uses old \texttt{std::string} ABI to provide compatibility for older \texttt{.so}
 \end{frame}
