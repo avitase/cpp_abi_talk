@@ -133,3 +133,82 @@
     \centering
     \scalebox{1.2}{(read \href{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2028r0.pdf}{\texttt{P2028}} and \href{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1863r1.pdf}{\texttt{P1863}} by Titus Winters for more information)}
 \end{frame}
+
+\section{Future Prospects}
+
+\begin{frame}[plain,noframenumbering]
+    \centering
+    \scalebox{3}{Future Prospects}
+\end{frame}
+
+\begin{frame}{Future Prospects}
+    \textbf{Break ABI with future releases:} move run-time failures to compile-time (when possible) by changing mangled name
+
+    \begin{itemize}
+        \item new namespaces: \textit{e.g.}, \texttt{std2::} or \texttt{std::abi42::}
+        \begin{itemize}
+            \item developers now have to choose between \texttt{std::optional} and \texttt{std2::optional} or duplicate overloads
+            \item when will \texttt{std3::} arrive?
+        \end{itemize}
+        \item change entire mangling scheme: \textit{e.g.}, \texttt{\_Z} $\mapsto$ \texttt{\_Y} on Itanium
+        \begin{itemize}
+            \item Compiler vendors could ship both forms
+        \end{itemize}
+        \item Introduce version number (ABI break)
+        \begin{itemize}
+            \item MSVC does already include version numbers in DLLs (MSVCs users are used to recompile with each new version of Visual Studio \ldots)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{State-of-the-Art}
+    \begin{itemize}
+        \item No (major?) ABI breaks since \texttt{C++11} (\textbf{12 years in 2023!})
+        \item \href{https://www.hyrumslaw.com/}{Hyrum's Law} (or \href{https://xkcd.com/1172/}{\texttt{xkcd.com/1172}}): passing ABI-unstable types across ABI boundaries happened to work for more than a decade. People rely on ABI stability, even though it was never explicitly promised.
+        \item Expose C-APIs whenever possible
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{State-of-the-Art}
+    \begin{columns}
+        \begin{column}{.45\textwidth}
+            \textbf{Standard Meeting, Prague 2020}
+            \begin{itemize}
+                \item WG21 is not in favor of an ABI break in \texttt{C++23} or \texttt{C++26}
+                \item WG21 is in favor of an ABI break in a future version of C++
+                \item WG21 will take time to consider proposals requiring an ABI break 
+                \item WG21 will not promise stability forever
+                \item WG21 wants to keep prioritizing performance over stability
+            \end{itemize}
+        \end{column}
+        \begin{column}{.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{bryce_twitter.png}\\
+            {\footnotesize \href{https://twitter.com/blelbach/status/1228962495865507840}{Twitter: \texttt{@blebach} (2020)}}
+
+        \end{column}
+    \end{columns}
+
+    \vspace*{5mm}
+
+    (\href{https://cor3ntin.github.io/posts/abi/}{Corentin Jabot: \textit{There was no applause. But I’m not sure we fully understood what we did and the consequences it could have.}})
+\end{frame}
+
+\begin{frame}{State-of-the-Art}
+    \centering
+    \includegraphics[height=.8\textheight]{titus_twitter.png}\\
+    {\footnotesize \href{https://twitter.com/TitusWinters/status/1224377740306132998}{Twitter: \texttt{@TitusWinters} (2020)}}
+\end{frame}
+
+\begin{frame}{Literature}
+    \begin{itemize}
+        \item \href{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2028r0.pdf}{Titus Winters, \texttt{P2028}: \textit{What is ABI, and What Should WG21 Do About It?}}
+        \item \href{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1863r1.pdf}{Titus Winters, \texttt{P1863}: \textit{ABI - Now or Never}}
+        \item \href{http://open-std.org/JTC1/SC22/WG21/docs/papers/2020/p1654r1.html}{Roger Orr, \texttt{P1654}: \textit{ABI breakage - summary of initial comments}}
+        \item \href{https://cppcast.com/titus-winters-abi/}{Titus Winters on CppCast \#224: \textit{The C++ ABI}}
+        \item \href{https://cppcast.com/john-lakos-large-scale-cpp/}{John Lakos on CppCast \#233: \textit{Large Scale C++}}
+        \item \href{https://cor3ntin.github.io/posts/abi/}{Corentin Jabot on \texttt{cor3ntin.github.io/posts/abi/}: \textit{The Day The Standard Library Died}}
+        \item \href{https://thephd.github.io/freestanding-noexcept-allocators-vector-memory-hole}{JeanHeyd Meneide on \texttt{thephd.github.io/freestanding-noexcept-allocators-vector-memory-hole}}
+        \item \href{https://youtu.be/GRuX31P4Ric}{Danila Kutenin on \texttt{youtu.be/GRuX31P4Ric}: \textit{C++ STL best and worst performance features and how to learn from them}}
+    \end{itemize}
+\end{frame}
