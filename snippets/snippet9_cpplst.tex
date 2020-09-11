@@ -1,0 +1,16 @@
+\begin{lstlisting}[title=\href{https://godbolt.org/z/MKPq35}{\texttt{godbolt.org/z/MKPq35}}]
+template <typename>
+struct lock_guard_1 {
+    lock_guard_1() {}
+};
+
+template <typename...>
+struct lock_guard_2 {
+    lock_guard_2() {}
+};
+
+void f() {
+    lock_guard_1<int> l1{};
+    lock_guard_2<int> l2{};
+}
+\end{lstlisting}

@@ -1,4 +1,135 @@
+\section{Quiz Time}
+
 \begin{frame}[plain,noframenumbering]
     \centering
-    \scalebox{3}{Quiz time}
+    \scalebox{3}{Quiz Time}
+\end{frame}
+
+\begin{frame}{Quiz: Will it break ABI?}
+    \textbf{Proposal:} make \texttt{std::vector<T>::push\_back} return a reference to the element in its new location
+
+    \vspace*{5mm}
+
+    \centering
+
+    \scalebox{1.2}{\textcolor{vertexDarkRed}{\texttt{void}}\texttt{ push\_back(const T\&);}}
+
+    \scalebox{2}{$\downarrow$}
+
+    \scalebox{1.2}{\textcolor{vertexDarkRed}{\texttt{T\&}}\texttt{ push\_back(const T\&);}}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz: Will it break ABI?}
+    \begin{columns}[t]
+        \begin{column}{.4\textwidth}
+            \inputcpplisting{snippet7}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \inputasmlisting{snippet7}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz: Will it break ABI?}
+    Both, \texttt{void push\_back} and \texttt{T\& push\_back} have the same mangled name (Itanium ABI)
+    \begin{itemize}
+        \item \textbf{Two} definitions in the old and the new TU
+        \item ODR violation
+        \item Linker will pick only \textbf{one} definition (by \textbf{overwriting} the other)
+        \item \textcolor{vertexDarkRed}{ABI break:} reading return value from \texttt{eax} when there is none
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quiz: Will it break ABI?}
+    \textbf{Proposal:} make \texttt{std::vector<T>::emplace\_back} return a reference to the element in its new location
+
+    \vspace*{5mm}
+
+    \centering
+
+    \scalebox{1.2}{\texttt{template<class... Args> }\textcolor{vertexDarkRed}{\texttt{void}}\texttt{ emplace\_back(Args\&\&...);}}
+
+    \scalebox{2}{$\downarrow$}
+
+    \scalebox{1.2}{\texttt{template<class... Args> }\textcolor{vertexDarkRed}{\texttt{T\&}}\texttt{ emplace\_back(Args\&\&...);}}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz: Will it break ABI?}
+    \inputcpplisting{snippet8}
+    \textbf{Mangled names:} (Itanium ABI)
+    \begin{enumerate}
+        \item \texttt{\_ZN6vectorIiE14emplace\_back\_1\textcolor{vertexDarkRed}{IJiEEEvDpOT\_}}
+        \item \texttt{\_ZN6vectorIiE14emplace\_back\_2\textcolor{vertexDarkRed}{IJiEEERiDpOT\_}}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz: Will it break ABI?}
+    \texttt{void emplace\_back} and \texttt{T\& emplace\_back} have different mangled names (Itanium ABI)
+    \begin{itemize}
+        \item Two definitions in the old and the new TU
+        \item but no ODR violation
+        \item \textcolor{vertexDarkRed}{No ABI break:} old code calls the old one, new code calls the new one
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quiz: Will it break ABI?}
+    \textbf{Proposal:} extend \texttt{std::lock\_guard<T>} to allow for a variadic set of heterogeneous mutexes
+
+    \vspace*{5mm}
+
+    \centering
+
+    \scalebox{1.2}{\texttt{template<}\textcolor{vertexDarkRed}{\texttt{class Mutex}}\texttt{> class lock\_guard;}}
+
+    \scalebox{2}{$\downarrow$}
+
+    \scalebox{1.2}{\texttt{template<}\textcolor{vertexDarkRed}{\texttt{class... Mutexes}}\texttt{> class lock\_guard;}}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz: Will it break ABI?}
+    \begin{columns}[t]
+        \begin{column}{.4\textwidth}
+            \inputcpplisting{snippet9}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \inputasmlisting{snippet9}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz: Will it break ABI?}
+    \texttt{<class T> class} and \texttt{<class... T> class} have different mangled names (Itanium ABI)
+    \begin{itemize}
+        \item \textcolor{vertexDarkRed}{ABI break:} for example in \texttt{auto f(std::lock\_guard<M>\& lk);}
+        \item User compiles \texttt{f} using old \texttt{lock\_guard}
+        \item User then tries to call it from a TU using new \texttt{lock\_guard}
+        \item Mangled names don't match: linker error!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quiz: Will it break ABI?}
+    \textbf{Proposal:} change hashing by \texttt{std::hash} to improve performance of \texttt{std::unordered\_map} by 3-4x (\textit{cf.} \texttt{absl::node\_hash\_map})
+
+    \vspace*{5mm}
+
+    \textcolor{vertexDarkRed}{\textbf{ABI break:}}
+    \begin{itemize}
+        \item Hash value for an object is computed in old TU and stored in map
+        \item (Different) hash value is computed in new TU and used to lookup value in map
+        \item \textbf{Semantic meaning of binary representation has changed!}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Other Examples}
+    More examples:
+    \begin{itemize}
+        \item \texttt{std::regex} currently is 10-100x slower than equivalents in Rust or Go (\textit{cf.} any talk of \href{https://youtu.be/8dKWdJzPwHw}{Hana Dusíková})
+        \item Make \texttt{std::unique\_ptr} zero-overhead (\textit{cf.} Chandler Carruth, \href{https://youtu.be/rHIkrotSwcc}{\textit{There Are No Zero-cost Abstractions}})
+        \item Add \texttt{std::int128\_t} which already is supported on more and more platforms
+        \item Make \texttt{std::bitset} trivially destructible
+        \item \ldots
+    \end{itemize}
+
+    \centering
+    \scalebox{1.2}{(read \href{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2028r0.pdf}{\texttt{P2028}} and \href{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1863r1.pdf}{\texttt{P1863}} by Titus Winters for more information)}
 \end{frame}
