@@ -101,6 +101,9 @@
     \texttt{<class T> class} and \texttt{<class... T> class} have different mangled names (Itanium ABI)
     \begin{itemize}
         \item \textcolor{vertexDarkRed}{ABI break:} for example in \texttt{auto f(std::lock\_guard<M>\& lk);}
+        \begin{itemize}
+            \item \textit{cf.} \href{https://godbolt.org/z/Pex6Gx}{\texttt{godbolt.org/z/Pex6Gx}}
+        \end{itemize}
         \item User compiles \texttt{f} using old \texttt{lock\_guard}
         \item User then tries to call it from a TU using new \texttt{lock\_guard}
         \item Mangled names don't match: linker error!
