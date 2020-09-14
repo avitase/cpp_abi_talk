@@ -70,11 +70,11 @@
 \end{frame}
 
 \begin{frame}[fragile]{Quiz: Will it break ABI?}
-    \texttt{void emplace\_back} and \texttt{T\& emplace\_back} have different mangled names (Itanium ABI)
+    \texttt{void emplace\_back} and \texttt{T\& emplace\_back} have different mangled names (\textit{cf.} \href{https://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangle.function-type}{Itanium ABI: \textit{5.1.5.3 Function types}})
     \begin{itemize}
         \item Two definitions in the old and the new TU
         \item but no ODR violation
-        \item \textcolor{vertexDarkRed}{No ABI break:} old code calls the old one, new code calls the new one
+        \item \textcolor{vertexDarkRed}{No ABI break:} old code calls the old one, new code calls the new one ($\rightarrow$ proposal was accepted for \texttt{C++20}\,!)
     \end{itemize}
 \end{frame}
 
