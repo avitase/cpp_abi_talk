@@ -239,8 +239,8 @@ ret
                 \end{itemize}
                 \item Problem: passing COW string to impl that expects SSO \textbf{may link} (same mangled name)!
                 \begin{itemize}
-                    \item one word passed
-                    \item three words read
+                    \item one (quad-)word passed
+                    \item three (quad-)words read
                 \end{itemize}
                 \item \textit{Solution}${}^{\color{vertexDarkRed}\dagger}$: gcc changed mangled name
             \end{itemize}
