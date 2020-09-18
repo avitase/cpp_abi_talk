@@ -113,6 +113,17 @@ ret
     \begin{columns}[t]
         \begin{column}{.45\textwidth}
             \inputcpplisting{snippet1}
+        \end{column}
+        \begin{column}{.45\textwidth}
+            \inputasmlisting{snippet1a}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Name mangling: \texttt{C++} vs \texttt{C}}
+    \begin{columns}[t]
+        \begin{column}{.45\textwidth}
+            \inputcpplisting{snippet1}
 
                 \textbf{Why?}
                 \begin{itemize}
@@ -123,7 +134,7 @@ ret
                 (Name of function doesn't suffice to resolve \texttt{JMP} location)%
         \end{column}
         \begin{column}{.45\textwidth}
-            \inputasmlisting{snippet1}
+            \inputasmlisting{snippet1b}
         \end{column}
     \end{columns}
 \end{frame}
@@ -142,6 +153,9 @@ ret
         \item \texttt{C++} does not standardize name mangling
         \item \textit{Annotated C++ Reference Manual} even actively discourages usage of common mangling schemes. (Prevent linking when other aspects of ABI are incompatible.) 
     \end{itemize}
+
+    \centering
+    \footnotesize \textit{cf.} name mangling for Itanium ABI: \href{https://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangling-structure}{\texttt{itanium-cxx-abi.github.io/cxx-abi/abi.html\#mangling-structure}}
 \end{frame}
 
 \section{What is ABI?}

@@ -64,11 +64,15 @@
 \end{frame}
 
 \begin{frame}[fragile]{Quiz: Will it break ABI?}
-    \texttt{void emplace\_back} and \texttt{T\& emplace\_back} have different mangled names (Itanium ABI)
+    \texttt{void emplace\_back} and \texttt{T\& emplace\_back} have different mangled names\\
+    (\textit{cf.} \href{https://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangle.function-type}{Itanium ABI: \textit{5.1.5.3 Function types}})
     \begin{itemize}
         \item Two definitions in the old and the new TU
         \item but no ODR violation
         \item \textcolor{vertexDarkRed}{No ABI break:} old code calls the old one, new code calls the new one
+        \begin{itemize}
+            \item \href{https://en.cppreference.com/w/cpp/container/vector/emplace_back}{proposal was accepted for \texttt{C++20}}
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -199,9 +203,21 @@
 \end{frame}
 
 \begin{frame}{State-of-the-Art}
-    \centering
-    \includegraphics[height=.8\textheight]{titus_twitter.png}\\
-    {\footnotesize \href{https://twitter.com/TitusWinters/status/1224377740306132998}{Twitter: \texttt{@TitusWinters} (2020)}}
+    \begin{columns}
+        \begin{column}{.4\textwidth}
+            \centering
+            \includegraphics[height=.8\textheight]{titus_twitter.png}\\
+            {\footnotesize \href{https://twitter.com/TitusWinters/status/1224377740306132998}{Twitter: \texttt{@TitusWinters} (2020)}}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \textbf{STL alternatives}
+            \begin{itemize}
+                \item \texttt{abseil} by Google: \href{https://abseil.io/about/}{\texttt{abseil.io/about/}}
+                \item \texttt{folly} by Facebook: \href{https://github.com/facebook/folly}{\texttt{github.com/facebook/folly}}
+                \item \ldots
+            \end{itemize}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Literature}
