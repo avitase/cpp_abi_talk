@@ -123,7 +123,9 @@
     \end{columns}
     \ldots mangled names don't match: linker error!
 
-    \footnotesize (\textit{cf.} \href{https://en.cppreference.com/w/cpp/thread/lock_guard}{\texttt{std::lock\_guard}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/thread/scoped_lock}{\texttt{std::scoped\_lock}} / \href{https://en.cppreference.com/w/cpp/utility/functional/mem_fun}{\texttt{std::mem\_fun}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/utility/functional/mem_fn}{\texttt{std::mem\_fn}} / \ldots)
+    \begin{center}
+        \footnotesize (\textit{cf.} \href{https://en.cppreference.com/w/cpp/thread/lock_guard}{\texttt{std::lock\_guard}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/thread/scoped_lock}{\texttt{std::scoped\_lock}})
+    \end{center}
 \end{frame}
 
 \begin{frame}{Quiz: Will it break ABI?}
@@ -192,7 +194,17 @@
         \item No (major?) ABI breaks since \texttt{C++11} (\textbf{12 years in 2023!})
         \item \href{https://www.hyrumslaw.com/}{Hyrum's Law} (or \href{https://xkcd.com/1172/}{\texttt{xkcd.com/1172}}): passing ABI-unstable types across ABI boundaries happened to work for more than a decade. People rely on ABI stability, even though it was never explicitly promised.
         \item Expose C-APIs whenever possible
+        \item Rename types and functions, \textit{e.g.},
+        \begin{itemize}
+            \item \href{https://en.cppreference.com/w/cpp/thread/lock_guard}{\texttt{std::lock\_guard}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/thread/scoped_lock}{\texttt{std::scoped\_lock}}
+            \item \href{https://en.cppreference.com/w/cpp/utility/functional/mem_fun}{\texttt{std::mem\_fun}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/utility/functional/mem_fn}{\texttt{std::mem\_fn}}${}^{\color{vertexDarkRed}\dagger}$
+            \item \ldots
+        \end{itemize}
     \end{itemize}
+
+    \vspace{5mm}
+    
+    \footnotesize ${}^{\color{vertexDarkRed}\dagger}$ \textit{cf.} \href{https://youtu.be/geE-LyR_NrM}{Jason Turner on \texttt{youtu.be/geE-LyR\_NrM}, \textit{C++ Weekly - Ep 239 - std::mem\_fun vs std::mem\_fn Fight!}}
 \end{frame}
 
 \begin{frame}{State-of-the-Art}
