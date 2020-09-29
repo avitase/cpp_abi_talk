@@ -1,0 +1,10 @@
+\begin{lstlisting}[title=\href{https://godbolt.org/z/rvWx8K}{\texttt{godbolt.org/z/rvWx8K}}]
+template <class Mutex>
+class lock_guard_1 {};
+
+template <class... Mutexes>
+class lock_guard_2 {};
+
+void f(lock_guard_1<int>&) {};
+void f(lock_guard_2<int>&) {};
+\end{lstlisting}

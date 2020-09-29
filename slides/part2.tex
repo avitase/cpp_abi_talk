@@ -108,16 +108,22 @@
 \end{frame}
 
 \begin{frame}[fragile]{Quiz: Will it break ABI?}
-    \texttt{<class T> class} and \texttt{<class... T> class} have different mangled names (Itanium ABI)
-    \begin{itemize}
-        \item \textcolor{vertexDarkRed}{ABI break:} for example in \texttt{auto f(std::lock\_guard<M>\& lk);}
-        \begin{itemize}
-            \item \textit{cf.} \href{https://godbolt.org/z/Pex6Gx}{\texttt{godbolt.org/z/Pex6Gx}}
-        \end{itemize}
-        \item User compiles \texttt{f} using old \texttt{lock\_guard}
-        \item User then tries to call it from a TU using new \texttt{lock\_guard}
-        \item Mangled names don't match: linker error!
-    \end{itemize}
+    \begin{columns}[t]
+        \begin{column}{.4\textwidth}
+            \inputcpplisting{snippet10}
+            \textcolor{vertexDarkRed}{ABI break} if
+            \begin{itemize}
+                \item user compiles \texttt{f} using old \texttt{lock\_guard}
+                \item user then tries to call it from a TU using new \texttt{lock\_guard}
+            \end{itemize}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \inputasmlisting{snippet10}
+        \end{column}
+    \end{columns}
+    \ldots mangled names don't match: linker error!
+
+    \footnotesize (\textit{cf.} \href{https://en.cppreference.com/w/cpp/thread/lock_guard}{\texttt{std::lock\_guard}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/thread/scoped_lock}{\texttt{std::scoped\_lock}} / \href{https://en.cppreference.com/w/cpp/utility/functional/mem_fun}{\texttt{std::mem\_fun}} $\mapsto$ \href{https://en.cppreference.com/w/cpp/utility/functional/mem_fn}{\texttt{std::mem\_fn}} / \ldots)
 \end{frame}
 
 \begin{frame}{Quiz: Will it break ABI?}
